@@ -13,9 +13,9 @@ final Map dataObj = {
         color: Colors.greenAccent, size: 48.0),
   },
   'lottieAnimationURL': {
-    'bad': '',
-    'normal': '',
-    'good': 'https://assets2.lottiefiles.com/packages/lf20_9qmxhgz4.json',
+    'bad': 'https://assets8.lottiefiles.com/packages/lf20_th87EG.json',
+    'normal': 'https://assets8.lottiefiles.com/packages/lf20_zsskr8pv.json',
+    'good': 'https://assets8.lottiefiles.com/packages/lf20_ho3vw7rh.json',
   }
 };
 
@@ -35,9 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final random = Random();
 
   void _onTapScreen() {
+    if (_showStatus == false) {
+      setState(() {
+        status = statuses[random.nextInt(3)];
+      });
+    }
     setState(() {
       _showStatus = !_showStatus;
-      status = statuses[random.nextInt(2)];
     });
   }
 
@@ -45,20 +49,23 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => _onTapScreen(),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (_showStatus == true)
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: PlantStatus(
-                        phStatus: status,
-                        phValue: 6.421,
-                        waterStatus: status,
-                        waterValue: 70)),
-              Expanded(
-                  child: Lottie.network(dataObj['lottieAnimationURL']['good'])),
-            ]));
+        child: Stack(children: [
+          Positioned.fill(
+              top: 0,
+              child: AnimatedOpacity(
+                  opacity: _showStatus ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: Align(
+                      alignment: Alignment.topCenter,
+                      child: PlantStatus(
+                          phStatus: status,
+                          phValue: 6.421,
+                          waterStatus: status,
+                          waterValue: 70)))),
+          Positioned.fill(
+              bottom: -100,
+              child: Lottie.network(dataObj['lottieAnimationURL'][status])),
+        ]));
   }
 }
 
@@ -87,13 +94,13 @@ class PlantStatus extends StatelessWidget {
               dataObj['icon'][phStatus],
               Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Text(phValue.toString()))
+                  child: Text("pH : " + phValue.toString()))
             ]),
             Column(children: [
               dataObj['icon'][waterStatus],
               Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Text(waterValue.toString()))
+                  child: Text(waterValue.toString() + "%"))
             ])
           ],
         ));
