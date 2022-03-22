@@ -1,4 +1,5 @@
 import 'package:aloe_client/Home.dart';
+import 'package:aloe_client/nft.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,10 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text(
-      '커뮤니티',
-      style: optionStyle,
-    ),
+    NftScreen(),
     Text(
       '기타',
       style: optionStyle,
