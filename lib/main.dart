@@ -40,10 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     NftScreen(),
-    Text(
-      '기타',
-      style: optionStyle,
-    ),
   ];
 
   void _onItemTapped(int index) {
@@ -76,12 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.image),
+            label: 'NFT',
           ),
         ],
         currentIndex: _selectedIndex,
