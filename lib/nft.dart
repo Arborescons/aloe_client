@@ -17,6 +17,7 @@ class _NftScreenState extends State<NftScreen> {
   TextEditingController _textFieldController = TextEditingController();
   String address = "";
   List<NftData> nfts = <NftData>[];
+  bool isProgress = false;
 
   Future<http.Response> getNfts() async {
     return await http.get(Uri.parse(alchemyHttp + "/getNFTs?owner=" + address));
@@ -28,7 +29,7 @@ class _NftScreenState extends State<NftScreen> {
       var decoded = jsonDecode(response.body);
       var tempNfts = <NftData>[];
 
-      for(var i in decoded['ownedNfts']) {
+      for (var i in decoded['ownedNfts']) {
         tempNfts.add(NftData.fromJson(i));
       }
 
@@ -38,17 +39,22 @@ class _NftScreenState extends State<NftScreen> {
     }
   }
 
-  void onPressedFindNftsButton() async {
+  Future<void> onPressedFindNftsButton() async {
     var res = await fetchNfts();
     setState(() {
       nfts = res;
     });
+    return;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text(nfts[0].title)),
+      body: Center(
+          child: isProgress
+              ? const CircularProgressIndicator()
+              : Text(
+                  nfts.isEmpty ? "하단의 버튼을 눌러 주소를 입력해주세요." : nfts[0].title)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
@@ -56,7 +62,7 @@ class _NftScreenState extends State<NftScreen> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("NFT 주소를 입력해주세요."),
+                  title: const Text("NFT 주소를 입력해주세요."),
                   content: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -65,12 +71,12 @@ class _NftScreenState extends State<NftScreen> {
                       },
                       controller: _textFieldController,
                       decoration:
-                          InputDecoration(hintText: "Text Field in Dialog")),
+                          const InputDecoration(hintText: "Address")),
                   actions: <Widget>[
                     FlatButton(
                       color: Colors.red,
                       textColor: Colors.white,
-                      child: Text('취소'),
+                      child: const Text('취소'),
                       onPressed: () {
                         setState(() {
                           Navigator.pop(context);
@@ -80,8 +86,17 @@ class _NftScreenState extends State<NftScreen> {
                     FlatButton(
                       color: Colors.green,
                       textColor: Colors.white,
-                      child: Text('완료'),
-                      onPressed: onPressedFindNftsButton,
+                      child: const Text('완료'),
+                      onPressed: () async {
+                        setState(() {
+                          Navigator.pop(context);
+                          isProgress = true;
+                        });
+                        await onPressedFindNftsButton();
+                        setState(() {
+                          isProgress = false;
+                        });
+                      },
                     ),
                   ],
                 );
