@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   lottie: ^1.2.1
   http: ^0.13.4
+  transparent_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -89,3 +90,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  assets:
+    - lib/assets/loading.gif

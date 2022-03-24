@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import "package:aloe_client/secret.dart";
+import 'package:transparent_image/transparent_image.dart';
 
 class NftScreen extends StatefulWidget {
   const NftScreen({Key? key}) : super(key: key);
@@ -51,10 +52,21 @@ class _NftScreenState extends State<NftScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: isProgress
-              ? const CircularProgressIndicator()
-              : Text(
-                  nfts.isEmpty ? "하단의 버튼을 눌러 주소를 입력해주세요." : nfts[0].title)),
+          child: !isProgress
+              ? nfts.isEmpty
+                  ? Text("하단의 버튼을 눌러 주소를 입력해주세요.")
+                  : GridView.count(
+                      primary: false,
+                      padding: const EdgeInsets.all(10),
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      children: nfts.map((e) => FadeInImage.assetNetwork(
+                        placeholder: "lib/assets/loading.gif",
+                        image: e.mediaRaw,
+                      )).toList(),
+                    )
+              : const CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
@@ -70,8 +82,7 @@ class _NftScreenState extends State<NftScreen> {
                         });
                       },
                       controller: _textFieldController,
-                      decoration:
-                          const InputDecoration(hintText: "Address")),
+                      decoration: const InputDecoration(hintText: "Address")),
                   actions: <Widget>[
                     FlatButton(
                       color: Colors.red,

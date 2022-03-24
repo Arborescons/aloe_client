@@ -7,7 +7,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.8"
+    version: "3.2.2"
   async:
     dependency: transitive
     description:
@@ -115,7 +115,7 @@ packages:
       name: lottie
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.2"
   matcher:
     dependency: transitive
     description:
@@ -184,6 +184,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2"
+  transparent_image:
+    dependency: "direct main"
+    description:
+      name: transparent_image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   typed_data:
     dependency: transitive
     description:
